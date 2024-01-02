@@ -3,6 +3,11 @@ http://localhost:3000/popularRepositoriesCreatedLastWeek
 
 ###
 
+// Retrieve popular repositories created in the last week filtered by language
+http://localhost:3000/popularRepositoriesCreatedLastWeek?language=typescript
+
+###
+
 // Get bookmarked repositories
 http://localhost:3000/bookmarks
 

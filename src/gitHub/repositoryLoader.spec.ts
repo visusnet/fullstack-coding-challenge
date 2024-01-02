@@ -44,6 +44,21 @@ describe("loadPopularRepositoriesCreatedLastWeek", () => {
     expect(repositories).toEqual([repositoryDouble()]);
   });
 
+  it("returns the fetched repositories filtered by language (case-insensitive)", async () => {
+    mockFetchResponse({
+      items: [
+        githubRepositoryDouble({ language: "TypeScript" }),
+        githubRepositoryDouble({ language: "Java" }),
+        githubRepositoryDouble({ language: null }),
+      ],
+    });
+
+    const repositories =
+      await loadPopularRepositoriesCreatedLastWeek("typescript");
+
+    expect(repositories).toEqual([repositoryDouble()]);
+  });
+
   it("handles failed fetch request", async () => {
     mockFetchWithFailure();
 

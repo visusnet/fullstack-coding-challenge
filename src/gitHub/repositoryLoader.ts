@@ -1,19 +1,30 @@
 import { Repository } from "./repository";
 
-export async function loadPopularRepositoriesCreatedLastWeek(): Promise<
-  Repository[]
-> {
+export async function loadPopularRepositoriesCreatedLastWeek(
+  language?: string,
+): Promise<Repository[]> {
   const response = await fetch(
     `https://api.github.com/search/repositories?q=created:%3E${sevenDaysBeforeToday()}&sort=stars&order=desc`,
   );
-  return toRepositories(await response.json());
-}
 
-function toRepositories(payload: unknown): Repository[] {
+  const payload = await response.json();
+
   if (!isGitHubRepositoryResponsePayload(payload)) {
     throw new Error("Invalid response payload");
   }
-  return payload.items.map((item: any) => ({
+
+  return toRepositories(
+    typeof language !== "undefined"
+      ? payload.items.filter(
+          (item: any) =>
+            item.language?.toLocaleLowerCase() === language.toLocaleLowerCase(),
+        )
+      : payload.items,
+  );
+}
+
+function toRepositories(gitHubRepositories: GitHubRepository[]): Repository[] {
+  return gitHubRepositories.map((item: any) => ({
     name: item.name,
     htmlUrl: item.html_url,
     description: item.description,
@@ -37,6 +48,7 @@ export type GitHubRepository = {
   html_url: string;
   description?: string;
   stargazers_count: number;
+  language: string | null;
 };
 
 function isGitHubRepositoryResponsePayload(
