@@ -65,10 +65,20 @@ describe("loadPopularRepositories", () => {
       },
     ]);
   });
+
+  it("handles failed fetch request", async () => {
+    mockFetchWithFailure();
+
+    await expect(loadPopularRepositories()).rejects.toThrow("Fetch failed");
+  });
 });
 
 function mockFetchResponse(response: any): void {
   jest.spyOn(global, "fetch").mockResolvedValue({
     json: async () => response,
   } as Response);
+}
+
+function mockFetchWithFailure(): void {
+  jest.spyOn(global, "fetch").mockRejectedValueOnce(new Error("Fetch failed"));
 }
