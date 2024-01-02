@@ -1,6 +1,6 @@
-import { loadPopularRepositories } from "./repositoryLoader";
+import { loadPopularRepositoriesCreatedLastWeek } from "./repositoryLoader";
 
-describe("loadPopularRepositories", () => {
+describe("loadPopularRepositoriesCreatedLastWeek", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -8,7 +8,7 @@ describe("loadPopularRepositories", () => {
   it("makes an HTTP call to GitHub", async () => {
     mockFetchResponse({ items: [] });
 
-    await loadPopularRepositories();
+    await loadPopularRepositoriesCreatedLastWeek();
 
     expect(global.fetch).toHaveBeenCalledWith(
       expect.stringContaining("https://api.github.com/search/repositories"),
@@ -18,7 +18,7 @@ describe("loadPopularRepositories", () => {
   it("returns an empty array if the response is empty", async () => {
     mockFetchResponse({ items: [] });
 
-    const repositories = await loadPopularRepositories();
+    const repositories = await loadPopularRepositoriesCreatedLastWeek();
 
     expect(repositories).toEqual([]);
   });
@@ -36,7 +36,7 @@ describe("loadPopularRepositories", () => {
       ],
     });
 
-    const repositories = await loadPopularRepositories();
+    const repositories = await loadPopularRepositoriesCreatedLastWeek();
 
     expect(repositories).toHaveLength(1);
   });
@@ -54,7 +54,7 @@ describe("loadPopularRepositories", () => {
       ],
     });
 
-    const repositories = await loadPopularRepositories();
+    const repositories = await loadPopularRepositoriesCreatedLastWeek();
 
     expect(repositories).toEqual([
       {
@@ -69,14 +69,28 @@ describe("loadPopularRepositories", () => {
   it("handles failed fetch request", async () => {
     mockFetchWithFailure();
 
-    await expect(loadPopularRepositories()).rejects.toThrow("Fetch failed");
+    await expect(loadPopularRepositoriesCreatedLastWeek()).rejects.toThrow(
+      "Fetch failed",
+    );
   });
 
   it("handles failed JSON parsing", async () => {
     mockFetchResponse("invalid JSON");
 
-    await expect(loadPopularRepositories()).rejects.toThrow(
+    await expect(loadPopularRepositoriesCreatedLastWeek()).rejects.toThrow(
       "Invalid response payload",
+    );
+  });
+
+  it("fetches popular repositories created within the last week", async () => {
+    jest.useFakeTimers().setSystemTime(new Date("2024-01-02"));
+
+    mockFetchResponse({ items: [] });
+
+    await loadPopularRepositoriesCreatedLastWeek();
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      expect.stringContaining("created:%3E2023-12-26"),
     );
   });
 });

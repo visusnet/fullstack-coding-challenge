@@ -1,8 +1,10 @@
 import { Repository } from "./repository";
 
-export async function loadPopularRepositories(): Promise<Repository[]> {
+export async function loadPopularRepositoriesCreatedLastWeek(): Promise<
+  Repository[]
+> {
   const response = await fetch(
-    "https://api.github.com/search/repositories?q=created:%3E2017-01-10&sort=stars&order=desc",
+    `https://api.github.com/search/repositories?q=created:%3E${sevenDaysBeforeToday()}&sort=stars&order=desc`,
   );
   return toRepositories(await response.json());
 }
@@ -17,6 +19,12 @@ function toRepositories(payload: unknown): Repository[] {
     description: item.description,
     numberOfStars: item.stargazers_count,
   }));
+}
+
+function sevenDaysBeforeToday(): string {
+  const today = new Date();
+  const sevenDaysBefore = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+  return sevenDaysBefore.toISOString().split("T")[0];
 }
 
 type GitHubRepositoryResponsePayload = {
