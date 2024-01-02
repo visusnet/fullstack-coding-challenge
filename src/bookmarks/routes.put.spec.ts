@@ -3,7 +3,7 @@ import request from "supertest";
 import { repositoryDouble } from "../test/doubles";
 import { registerRoutes } from "./routes";
 
-describe("/bookmarks", () => {
+describe("PUT /bookmarks", () => {
   const app = express();
   app.use(express.json());
   registerRoutes(app);

@@ -20,4 +20,10 @@ export function registerRoutes(app: Express): void {
       res.status(500).send({ error: (error as Error).message });
     }
   });
+
+  app.get("/bookmarks", async (req: Request, res: Response) => {
+    res.setHeader("Content-Type", "application/json");
+
+    res.send(bookmarkService.getBookmarkedRepositories());
+  });
 }
