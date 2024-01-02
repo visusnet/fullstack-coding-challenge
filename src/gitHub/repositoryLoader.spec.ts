@@ -26,4 +26,22 @@ describe("loadPopularRepositories", () => {
 
     expect(repositories).toEqual([]);
   });
+
+  it("returns an array of repositories if the response is not empty", async () => {
+    jest.spyOn(global, "fetch").mockResolvedValue({
+      json: async () => [
+        {
+          id: 1,
+          name: "fullstack-coding-challenge",
+          html_url: "https://github.com/visusnet/fullstack-coding-challenge",
+          description: "",
+          stargazers_count: 1,
+        },
+      ],
+    } as Response);
+
+    const repositories = await loadPopularRepositories();
+
+    expect(repositories).toHaveLength(1);
+  });
 });
