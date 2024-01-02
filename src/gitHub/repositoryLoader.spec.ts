@@ -1,3 +1,4 @@
+import { githubRepositoryDouble, repositoryDouble } from "../test/doubles";
 import { loadPopularRepositoriesCreatedLastWeek } from "./repositoryLoader";
 
 describe("loadPopularRepositoriesCreatedLastWeek", () => {
@@ -25,15 +26,7 @@ describe("loadPopularRepositoriesCreatedLastWeek", () => {
 
   it("returns an array of repositories if the response is not empty", async () => {
     mockFetchResponse({
-      items: [
-        {
-          id: 1,
-          name: "fullstack-coding-challenge",
-          html_url: "https://github.com/visusnet/fullstack-coding-challenge",
-          description: "",
-          stargazers_count: 1,
-        },
-      ],
+      items: [githubRepositoryDouble()],
     });
 
     const repositories = await loadPopularRepositoriesCreatedLastWeek();
@@ -43,27 +36,12 @@ describe("loadPopularRepositoriesCreatedLastWeek", () => {
 
   it("returns the fetched repositories", async () => {
     mockFetchResponse({
-      items: [
-        {
-          id: 1,
-          name: "fullstack-coding-challenge",
-          html_url: "https://github.com/visusnet/fullstack-coding-challenge",
-          description: "",
-          stargazers_count: 1,
-        },
-      ],
+      items: [githubRepositoryDouble()],
     });
 
     const repositories = await loadPopularRepositoriesCreatedLastWeek();
 
-    expect(repositories).toEqual([
-      {
-        name: "fullstack-coding-challenge",
-        htmlUrl: "https://github.com/visusnet/fullstack-coding-challenge",
-        description: "",
-        numberOfStars: 1,
-      },
-    ]);
+    expect(repositories).toEqual([repositoryDouble()]);
   });
 
   it("handles failed fetch request", async () => {

@@ -31,7 +31,8 @@ type GitHubRepositoryResponsePayload = {
   items: GitHubRepository[];
 };
 
-type GitHubRepository = {
+export type GitHubRepository = {
+  id: number;
   name: string;
   html_url: string;
   description: string;
