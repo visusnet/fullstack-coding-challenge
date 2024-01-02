@@ -1,0 +1,22 @@
+{
+  "name": "fullstack-coding-challenge",
+  "version": "1.0.0",
+  "description": "This is a coding challenge that I am participating in and it is not meant to be of interest to anyone else, even though it is public. I am not looking for feedback or pull requests. I am not looking for a job.",
+  "main": "src/index.ts",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/visusnet/fullstack-coding-challenge.git"
+  },
+  "author": "Alexander Rose",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/visusnet/fullstack-coding-challenge/issues"
+  },
+  "homepage": "https://github.com/visusnet/fullstack-coding-challenge#readme"
+}
