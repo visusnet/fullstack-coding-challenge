@@ -6,9 +6,7 @@ describe("loadPopularRepositories", () => {
   });
 
   it("makes an HTTP call to GitHub", async () => {
-    jest.spyOn(global, "fetch").mockResolvedValue({
-      json: async () => [],
-    } as Response);
+    mockFetchResponse({ items: [] });
 
     await loadPopularRepositories();
 
@@ -18,9 +16,7 @@ describe("loadPopularRepositories", () => {
   });
 
   it("returns an empty array if the response is empty", async () => {
-    jest.spyOn(global, "fetch").mockResolvedValue({
-      json: async () => [],
-    } as Response);
+    mockFetchResponse({ items: [] });
 
     const repositories = await loadPopularRepositories();
 
@@ -28,8 +24,8 @@ describe("loadPopularRepositories", () => {
   });
 
   it("returns an array of repositories if the response is not empty", async () => {
-    jest.spyOn(global, "fetch").mockResolvedValue({
-      json: async () => [
+    mockFetchResponse({
+      items: [
         {
           id: 1,
           name: "fullstack-coding-challenge",
@@ -38,10 +34,41 @@ describe("loadPopularRepositories", () => {
           stargazers_count: 1,
         },
       ],
-    } as Response);
+    });
 
     const repositories = await loadPopularRepositories();
 
     expect(repositories).toHaveLength(1);
   });
+
+  it("returns the fetched repositories", async () => {
+    mockFetchResponse({
+      items: [
+        {
+          id: 1,
+          name: "fullstack-coding-challenge",
+          html_url: "https://github.com/visusnet/fullstack-coding-challenge",
+          description: "",
+          stargazers_count: 1,
+        },
+      ],
+    });
+
+    const repositories = await loadPopularRepositories();
+
+    expect(repositories).toEqual([
+      {
+        name: "fullstack-coding-challenge",
+        htmlUrl: "https://github.com/visusnet/fullstack-coding-challenge",
+        description: "",
+        numberOfStars: 1,
+      },
+    ]);
+  });
 });
+
+function mockFetchResponse(response: any): void {
+  jest.spyOn(global, "fetch").mockResolvedValue({
+    json: async () => response,
+  } as Response);
+}
