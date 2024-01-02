@@ -1,0 +1,20 @@
+// Retrieve popular repositories created in the last week
+http://localhost:3000/popularRepositoriesCreatedLastWeek
+
+###
+
+// Get bookmarked repositories
+http://localhost:3000/bookmarks
+
+###
+
+// Add a repository to bookmarks
+PUT http://localhost:3000/bookmarks
+Content-Type: application/json
+
+{
+  "name": "fullstack-coding-challenge",
+  "htmlUrl": "https://github.com/visusnet/fullstack-coding-challenge",
+  "description": "",
+  "numberOfStars": 1
+}
