@@ -1,4 +1,4 @@
-import { loadPopularRepositoriesCreatedLastWeek } from "./repositoryLoader";
+import { loadPopularRepositoriesCreatedLastWeek } from "./repository-loader";
 import { Express, Request, Response } from "express";
 
 export function registerRoutes(app: Express): void {

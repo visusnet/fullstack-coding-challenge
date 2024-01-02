@@ -1,5 +1,5 @@
 import { Repository } from "../gitHub/repository";
-import { GitHubRepository } from "../gitHub/repositoryLoader";
+import { GitHubRepository } from "../gitHub/repository-loader";
 
 export function githubRepositoryDouble(
   overrides: Partial<GitHubRepository> = {},

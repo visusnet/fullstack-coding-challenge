@@ -1,5 +1,5 @@
 import { githubRepositoryDouble, repositoryDouble } from "../test/doubles";
-import { loadPopularRepositoriesCreatedLastWeek } from "./repositoryLoader";
+import { loadPopularRepositoriesCreatedLastWeek } from "./repository-loader";
 
 describe("loadPopularRepositoriesCreatedLastWeek", () => {
   beforeEach(() => {

@@ -3,7 +3,7 @@ import request from "supertest";
 import { repositoryDouble } from "../test/doubles";
 import { registerRoutes } from "./routes";
 
-jest.mock("./repositoryLoader", () => ({
+jest.mock("./repository-loader", () => ({
   loadPopularRepositoriesCreatedLastWeek: jest.fn(),
 }));
 
@@ -17,7 +17,7 @@ describe("/popularRepositoriesCreatedLastWeek", () => {
 
   it("returns a list of popular repositories created last week", async () => {
     (
-      jest.requireMock("./repositoryLoader")
+      jest.requireMock("./repository-loader")
         .loadPopularRepositoriesCreatedLastWeek as jest.Mock
     ).mockResolvedValue([repositoryDouble()]);
 
@@ -35,7 +35,7 @@ describe("/popularRepositoriesCreatedLastWeek", () => {
 
   it("returns a 500 response if an error occurs", async () => {
     (
-      jest.requireMock("./repositoryLoader")
+      jest.requireMock("./repository-loader")
         .loadPopularRepositoriesCreatedLastWeek as jest.Mock
     ).mockRejectedValue(new Error("Something went wrong"));
 
@@ -53,7 +53,7 @@ describe("/popularRepositoriesCreatedLastWeek", () => {
 
   it("filters by language", async () => {
     (
-      jest.requireMock("./repositoryLoader")
+      jest.requireMock("./repository-loader")
         .loadPopularRepositoriesCreatedLastWeek as jest.Mock
     ).mockResolvedValue([repositoryDouble()]);
 
