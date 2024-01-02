@@ -5,6 +5,8 @@ const app: Express = express();
 /* c8 ignore next */
 const port = process.env.PORT ?? 3000;
 
+app.use(express.json());
+
 gitHub.registerRoutes(app);
 
 app.listen(port, () => {
