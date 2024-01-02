@@ -4,15 +4,14 @@ export async function loadPopularRepositories(): Promise<Repository[]> {
   const response = await fetch(
     "https://api.github.com/search/repositories?q=created:%3E2017-01-10&sort=stars&order=desc",
   );
-  return toRepositories(
-    (await response.json()) as GitHubRepositoryResponsePayload,
-  );
+  return toRepositories(await response.json());
 }
 
-function toRepositories(
-  githubRepositoriesResponsePayload: GitHubRepositoryResponsePayload,
-): Repository[] {
-  return githubRepositoriesResponsePayload.items.map((item: any) => ({
+function toRepositories(payload: unknown): Repository[] {
+  if (!isGitHubRepositoryResponsePayload(payload)) {
+    throw new Error("Invalid response payload");
+  }
+  return payload.items.map((item: any) => ({
     name: item.name,
     htmlUrl: item.html_url,
     description: item.description,
@@ -30,3 +29,25 @@ type GitHubRepository = {
   description: string;
   stargazers_count: number;
 };
+
+function isGitHubRepositoryResponsePayload(
+  payload: unknown,
+): payload is GitHubRepositoryResponsePayload {
+  return (
+    typeof payload === "object" &&
+    payload !== null &&
+    Array.isArray((payload as any).items) &&
+    (payload as any).items.every(isGitHubRepository)
+  );
+}
+
+function isGitHubRepository(payload: unknown): payload is GitHubRepository {
+  return (
+    typeof payload === "object" &&
+    payload !== null &&
+    typeof (payload as any).name === "string" &&
+    typeof (payload as any).html_url === "string" &&
+    typeof (payload as any).description === "string" &&
+    typeof (payload as any).stargazers_count === "number"
+  );
+}

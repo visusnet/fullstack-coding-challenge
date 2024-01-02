@@ -71,6 +71,14 @@ describe("loadPopularRepositories", () => {
 
     await expect(loadPopularRepositories()).rejects.toThrow("Fetch failed");
   });
+
+  it("handles failed JSON parsing", async () => {
+    mockFetchResponse("invalid JSON");
+
+    await expect(loadPopularRepositories()).rejects.toThrow(
+      "Invalid response payload",
+    );
+  });
 });
 
 function mockFetchResponse(response: any): void {
