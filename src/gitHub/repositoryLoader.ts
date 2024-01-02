@@ -35,7 +35,7 @@ export type GitHubRepository = {
   id: number;
   name: string;
   html_url: string;
-  description: string;
+  description?: string;
   stargazers_count: number;
 };
 
@@ -56,7 +56,7 @@ function isGitHubRepository(payload: unknown): payload is GitHubRepository {
     payload !== null &&
     typeof (payload as any).name === "string" &&
     typeof (payload as any).html_url === "string" &&
-    typeof (payload as any).description === "string" &&
+    typeof (payload as any).description !== "undefined" &&
     typeof (payload as any).stargazers_count === "number"
   );
 }
